@@ -1,4 +1,5 @@
 var issueContainerEl = document.querySelector("#issues-container");
+var limitWarningEl = document.querySelector("#limit-warning");
 
 var getRepoIssue = function(repo) {
     console.log(repo);
@@ -11,6 +12,8 @@ var getRepoIssue = function(repo) {
             response.json().then(function(data){
                 //pass response data to DOM function
                 displayIssues(data);
+            //check if the api has paginated issues
+          displayWarning(repo);
             });
         }
         else {
@@ -53,4 +56,15 @@ var displayIssues = function(issues) {
     }
 }
 
-getRepoIssue("OliviaRamsfield/git-it-done");
+var displayWarning = function(repo) {
+    //add text to warning container
+    limitWarningEl.textContent = "To see more than 30 issues, visit "
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+    //append to warning container
+    limitWarningEl.appendChild(linkEl);
+};
+
+getRepoIssue("facebook/react");
